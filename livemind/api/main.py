@@ -1,7 +1,10 @@
 """FastAPI REST server exposing LiveMind multi-hop research, live connectors, and dual-tier memory."""
 
+from pathlib import Path
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from livemind import __version__
 from livemind.agent.researcher import MultiHopResearcher
 from livemind.api.schemas import (
@@ -24,6 +27,20 @@ app = FastAPI(
     version=__version__,
     description="Agentic RAG over Live Workspace Data with Dual-Tier Persistent Memory",
 )
+
+# Static files for Apple HIG frontend
+STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+
+@app.get("/", tags=["UI"], include_in_schema=False)
+def serve_ui():
+    """Serves Apple HIG frontend interface."""
+    index_file = STATIC_DIR / "index.html"
+    if index_file.exists():
+        return FileResponse(str(index_file))
+    return {"message": "LiveMind API active. Static UI not built."}
 
 # Shared singleton services
 jira_connector = JiraConnector()
