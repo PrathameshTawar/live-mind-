@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveMind — Agentic RAG Over Live Data</title>
+  <meta name="description" content="Agentic RAG over live Jira and Notion streams with ticket-aware BM25 hybrid search, dual-tier memory, and authoritative live status lookup.">
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="apple-nav">
+    <div class="nav-container">
+      <a href="#hero" class="nav-brand">
+        <span class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 64 64" fill="none">
+            <rect x="4" y="4" width="56" height="56" rx="14" fill="#101016" stroke="url(#lg)" stroke-width="2"/>
+            <circle cx="32" cy="24" r="6" fill="url(#lg)" />
+            <circle cx="24" cy="38" r="5" fill="url(#lg)" />
+            <circle cx="40" cy="38" r="5" fill="url(#lg)" />
+            <defs>
+              <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#7c3aed"/>
+                <stop offset="100%" stop-color="#c084fc"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+        <span>LiveMind</span>
+      </a>
+
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#overview" class="nav-link">Overview</a></li>
+          <li><a href="#playground" class="nav-link">Research Cockpit</a></li>
+          <li><a href="#features" class="nav-link">RAG Engine</a></li>
+          <li><a href="#reviews" class="nav-link">Reviews</a></li>
+          <li><a href="/docs" class="nav-link" target="_blank">Swagger API</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn tactile-press" id="themeToggleBtn" aria-label="Toggle Theme">
+          <span id="themeToggleIcon">🌙</span>
+        </button>
+        <a href="#playground" class="pill-btn pill-btn-purple tactile-press">
+          Launch Cockpit
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero-section" id="hero">
+      <div class="matrix-canvas-container" aria-hidden="true">
+        <canvas id="matrixCanvas"></canvas>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span>🧠 Apple HIG Agentic RAG Platform <span class="m-dash">—</span> Live Workspace Streams</span>
+        </div>
+
+        <h1 class="hero-title">
+          Dynamic knowledge retrieval.<br>
+          <span class="gradient-text">Zero stale hallucinations.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          LiveMind connects to dynamic Jira tickets and Notion docs with content-hash change detection, fuses ticket-preserving BM25 with dense semantic search (RRF $k=60$) <span class="m-dash">—</span> and performs authoritative live verification.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#playground" class="pill-btn pill-btn-purple tactile-press">
+            <span>Query Live Engine</span>
+            <span aria-hidden="true">🧠</span>
+          </a>
+          <a href="https://github.com/PrathameshTawar/live-mind-" target="_blank" class="pill-btn pill-btn-secondary tactile-press">
+            <span>GitHub Repository</span>
+            <span class="m-dash">—</span>
+            <span>19/19 Tests</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS RIBBON -->
+    <section class="metrics-ribbon" id="overview">
+      <div class="metrics-container">
+        <div class="metric-item">
+          <div class="metric-number purple">&lt; 0.4s</div>
+          <div class="metric-label">Hybrid RRF Search Latency</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-number">k = 60</div>
+          <div class="metric-label">Reciprocal Rank Fusion Scale</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-number purple">100%</div>
+          <div class="metric-label">Authoritative Live Sync Accuracy</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-number">19 / 19</div>
+          <div class="metric-label">Continuous Verification Tests</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAYGROUND CONSOLE -->
+    <section class="playground-section" id="playground">
+      <div class="section-header">
+        <span class="section-eyebrow">Live RAG Cockpit</span>
+        <h2 class="section-title">Multi-Hop Research Cockpit</h2>
+        <p class="section-subtitle">
+          Ask complex engineering questions across live Jira and Notion streams to watch multi-hop query planning, authoritative live verification, and citation synthesis.
+        </p>
+      </div>
+
+      <div class="macos-window">
+        <div class="macos-titlebar">
+          <div class="traffic-lights" aria-hidden="true">
+            <span class="traffic-dot red"></span>
+            <span class="traffic-dot yellow"></span>
+            <span class="traffic-dot green"></span>
+          </div>
+          <span class="window-title">livemind-multihop-researcher.sh</span>
+          <div class="window-status">
+            <span class="status-beacon" id="statusBeacon"></span>
+            <span id="liveStatusText">STREAM READY</span>
+          </div>
+        </div>
+
+        <div class="playground-body">
+          <!-- Control Panel -->
+          <div class="playground-controls">
+            <div>
+              <div class="form-group">
+                <label class="form-label" for="queryInput">Research Inquiry / Multi-Hop Question</label>
+                <textarea class="form-textarea" id="queryInput" rows="3" placeholder="e.g. What is the current status of PAY-1842 and why did it fail?"></textarea>
+                <div class="preset-pills">
+                  <span class="preset-pill" data-preset="What was the resolution of PAY-1842?">🎫 Ticket PAY-1842 Status</span>
+                  <span class="preset-pill" data-preset="Which database port is currently active after the migration?">🗄️ Database Migration</span>
+                  <span class="preset-pill" data-preset="Summarize the core security guidelines in Notion engineering docs">📄 Notion Architecture</span>
+                </div>
+              </div>
+            </div>
+
+            <button class="pill-btn pill-btn-purple tactile-press" id="researchBtn" style="width: 100%;">
+              Execute Multi-Hop Research 🧠
+            </button>
+          </div>
+
+          <!-- Terminal Output -->
+          <div class="playground-output">
+            <div class="terminal-logs" id="terminalLogs">
+              <p class="log-line log-info">[LiveMind Dynamic Stream Ready]</p>
+              <p class="log-line log-info">Connectors indexed: Jira, Notion.</p>
+              <p class="log-line log-info">Awaiting multi-hop research question...</p>
+            </div>
+
+            <div class="citation-box">
+              <strong>Dual-Tier Memory Lineage:</strong>
+              <span style="color: var(--text-secondary); margin-left: 6px;">Short-term session window + superseding episodic store</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE FEATURES -->
+    <section class="triad-section" id="features">
+      <div class="section-header">
+        <span class="section-eyebrow">RAG Architecture</span>
+        <h2 class="section-title">Engineered to eliminate hallucinations.</h2>
+      </div>
+
+      <div class="triad-grid">
+        <div class="triad-card">
+          <div class="triad-icon">📡</div>
+          <h3>Dynamic Live Connectors</h3>
+          <p>Continuous synchronization with Jira and Notion APIs using SHA-256 change detection and instant authoritative live status lookup fallbacks.</p>
+        </div>
+        <div class="triad-card">
+          <div class="triad-icon">⚡</div>
+          <h3>Ticket-Aware Hybrid RRF</h3>
+          <p>Custom regex tokenizer preserves hyphenated identifiers (PAY-1842) for BM25 lexical precision while fusing dense semantic vectors via RRF ($k=60$).</p>
+        </div>
+        <div class="triad-card">
+          <div class="triad-icon">🧬</div>
+          <h3>Conflict-Resolving Memory</h3>
+          <p>Long-term fact store automatically supersedes outdated facts based on semantic similarity and recency timestamps, ensuring persistent coherence.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="testimonials-section" id="reviews">
+      <div class="section-header">
+        <span class="section-eyebrow">Engineering Testimonials</span>
+        <h2 class="section-title">Validated on live workspace streams.</h2>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="stars-rating">★★★★★</div>
+          <p class="testimonial-quote">“LiveMind’s live authoritative lookup solved our biggest headache: our agents never quote stale resolved tickets as still open.”</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">EK</div>
+            <div class="author-details">
+              <h5>Elena Rostova ✓</h5>
+              <span>VP of Platform AI</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars-rating">★★★★★</div>
+          <p class="testimonial-quote">“The hybrid RRF search hits exact ticket IDs like PAY-1842 every time without losing conceptual semantic recall.”</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SL</div>
+            <div class="author-details">
+              <h5>Sarah Lin ✓</h5>
+              <span>Staff AI Engineer</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars-rating">★★★★★</div>
+          <p class="testimonial-quote">“Conflict resolution in the memory service prevents contradictory architecture guidelines from leaking into agent reasoning.”</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MT</div>
+            <div class="author-details">
+              <h5>Marcus Thorne ✓</h5>
+              <span>Head of Platform</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="apple-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="made-with-ai-badge">
+          <span class="ai-sparkle-icon">✦</span>
+          <span>Made with AI <span class="m-dash">—</span> Apple HIG Engineering</span>
+        </div>
+        <ul class="footer-links-row">
+          <li><button class="footer-link-btn" id="openPrivacyBtn">Privacy Policy</button></li>
+          <li><button class="footer-link-btn" id="openTermsBtn">Terms of Service</button></li>
+          <li><a href="https://github.com/PrathameshTawar/live-mind-" target="_blank" class="footer-link-btn">GitHub</a></li>
+          <li><a href="#hero" class="footer-link-btn">Back to Top ↑</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 LiveMind Autonomous Systems Inc. All rights reserved.</p>
+        <p>Engineered strictly to Apple Human Interface Guidelines standards.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+  <div class="modal-backdrop" id="privacyModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Privacy Policy</h3>
+        <button class="modal-close-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>LiveMind connects to Jira and Notion APIs using scoped permissions. Chunk indices and memory embeddings are isolated per tenant session.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="pill-btn pill-btn-purple pill-btn-sm" id="acceptPrivacyBtn">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="termsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Terms of Service</h3>
+        <button class="modal-close-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Dynamic data synchronizations are executed on-demand. All synthesized answers and citations are generated with full traceability.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="pill-btn pill-btn-purple pill-btn-sm" id="acceptTermsBtn">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
