@@ -27,6 +27,8 @@ class ResearchResponse(BaseModel):
     plan: List[str]
     final_answer: str
     citations: List[CitationResponse]
+    confidence_score: float = 1.0
+    hop_count: int = 1
     status: str
     created_at: datetime
 
@@ -61,15 +63,19 @@ class MemoryFactRequest(BaseModel):
     fact: str = Field(..., description="Durable knowledge assertion")
     source_id: str
     source_url: str
+    predicate: Optional[str] = Field(default=None, description="Optional attribute key (e.g. 'owner', 'provider')")
+    source_type: Optional[str] = Field(default="meeting_notes", description="Origin source type")
     confidence: float = 1.0
 
 
 class MemoryFactResponse(BaseModel):
     memory_id: str
     subject: str
+    predicate: str = "general"
     fact: str
     source_id: str
     source_url: str
+    source_type: str = "meeting_notes"
     confidence: float
     observed_at: datetime
     is_active: bool
