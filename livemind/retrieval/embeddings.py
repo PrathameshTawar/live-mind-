@@ -1,9 +1,16 @@
 """Embedding service supporting sentence-transformers with graceful offline dense fallback."""
 
 import math
+import re
+import zlib
 from typing import List, Optional
 import numpy as np
 from livemind.core.config import settings
+
+
+def _stable_hash(text: str) -> int:
+    """Process-independent hash; built-in hash() is salted per interpreter run."""
+    return zlib.crc32(text.encode("utf-8"))
 
 
 def cosine_similarity(v1: List[float], v2: List[float]) -> float:
@@ -60,14 +67,14 @@ class EmbeddingService:
     def _dense_hash_embedding(self, text: str) -> List[float]:
         """Fast 384-dim semantic feature vector based on subword n-grams and hashing."""
         vec = np.zeros(self._dim, dtype=np.float32)
-        tokens = text.lower().split()
+        tokens = re.findall(r"\b[A-Za-z]+-\d+\b|\b\w+\b", text.lower())
         for token in tokens:
-            h = abs(hash(token)) % self._dim
+            h = _stable_hash(token) % self._dim
             vec[h] += 1.0
             # Also hash character 3-grams for morphological / synonym capture
             for i in range(max(0, len(token) - 2)):
                 ngram = token[i : i + 3]
-                nh = abs(hash(ngram) * 31) % self._dim
+                nh = (_stable_hash(ngram) * 31) % self._dim
                 vec[nh] += 0.5
 
         norm = float(np.linalg.norm(vec))
